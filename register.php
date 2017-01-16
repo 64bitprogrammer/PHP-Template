@@ -2,6 +2,7 @@
 session_start();
 $error_msg = "";
 $success_message = "";
+
 header('Content-Type: text/html; charset=utf-8' );
 
 require_once('connect.php');
@@ -24,6 +25,8 @@ if(isset($_POST['submit']))
   $state   = myFilter($_POST['state']);
   $country = myFilter($_POST['country']);
 
+  $directory = 'users/' . $email;
+
 
   $newdate = date('Y-m-d', strtotime($dob));
 
@@ -35,8 +38,18 @@ if(isset($_POST['submit']))
   {
     if(mysqli_query($conn,$insert_query))
     {
+      if(!is_dir($directory))
+      {
+        mkdir($directory);
+      }
+      $directory = "users/".$email ;
+      $image  = basename($_FILES['profile_pic']['name']);
+      $extension = end(explode('.', $image));
+      $target = $directory . "/profile" . ".$extension";
+      //move_uploaded_file($_FILES['profile_pic']['tmp_name'],$target) or die(" Image Storage Failed !");
+      watermarkProfile($email);
       $success_message = " Records Inserted Successfully ! ";
-	}
+	  }
     else
     {
       $error_msg = 'Insertion Failed ! ';
@@ -53,6 +66,72 @@ function myFilter($data) {
  // $data = stripslashes($data);
   $data = htmlspecialchars($data);
   return $data;
+}
+
+function watermarkProfile($email){
+  $destination_folder = "users/".$email ;
+  $watermark_png_file = "images/watermark.png";
+  $newFileName = "water.png";
+  $max_size = 800;
+
+  $image_name = $_FILES['profile_pic']['name']; //file name
+	$image_size = $_FILES['profile_pic']['size']; //file size
+	$image_temp = $_FILES['profile_pic']['tmp_name']; //file temp
+	$image_type = $_FILES['profile_pic']['type']; //file type
+
+	switch(strtolower($image_type)){ //determine uploaded image type
+			//Create new image from file
+			case 'image/png':
+				$image_resource =  imagecreatefrompng($image_temp);
+				break;
+			case 'image/gif':
+				$image_resource =  imagecreatefromgif($image_temp);
+				break;
+			case 'image/jpeg': case 'image/pjpeg':
+				$image_resource = imagecreatefromjpeg($image_temp);
+				break;
+			default:
+				$image_resource = false;
+		}
+
+	if($image_resource){
+		//Copy and resize part of an image with resampling
+		list($img_width, $img_height) = getimagesize($image_temp);
+
+	    //Construct a proportional size of new image
+		$image_scale        = min($max_size / $img_width, $max_size / $img_height);
+		$new_image_width    = ceil($image_scale * $img_width);
+		$new_image_height   = ceil($image_scale * $img_height);
+		$new_canvas         = imagecreatetruecolor($new_image_width , $new_image_height);
+
+		if(imagecopyresampled($new_canvas, $image_resource , 0, 0, 0, 0, $new_image_width, $new_image_height, $img_width, $img_height))
+		{
+
+			//if(!is_dir($destination_folder)){
+				//mkdir($destination_folder);//create dir if it doesn't exist
+		//	}
+
+			//center watermark
+			$watermark_left = ($new_image_width/2)-(300/2); //watermark left
+			$watermark_bottom = ($new_image_height/2)-(100/2); //watermark bottom
+
+			$watermark = imagecreatefrompng($watermark_png_file); //watermark image
+			imagecopy($new_canvas, $watermark, $watermark_left, $watermark_bottom, 0, 0, 300, 100); //merge image
+
+			//output image direcly on the browser.
+			//header('Content-Type: image/jpeg');
+			//imagejpeg($new_canvas, NULL , 90);
+
+			//Or Save image to the folder
+			imagejpeg($new_canvas, $destination_folder.'/'.$image_name , 90);
+
+			//free up memory
+			imagedestroy($new_canvas);
+			imagedestroy($image_resource);
+		}
+	}
+
+
 }
 
 ?>
@@ -75,7 +154,7 @@ function myFilter($data) {
 <div class="container">
 <div class="jumbotron" >
   <h2 align="center" >Registration</h2>
-  <form method="POST" name="myForm" id="myForm" action="" onsubmit="return validateForm();">
+  <form method="POST" enctype="multipart/form-data" name="myForm" id="myForm" action="" onsubmit="return validateForm();">
 
   <div class="row">
   <div class="col-sm-6">
@@ -130,6 +209,10 @@ function myFilter($data) {
 
   </div>
   <div class="col-sm-6">
+    <div class="form-group">
+      <label for="image"> Image </label>
+      <input type="file" name="profile_pic" id="profile_pic" onchange="setImage();" />
+    </div>
     <div class="form-group">
         <label for="number"> Contact Number:</label>
         <input type="text" maxlength="10" class="form-control" value="" id="number" placeholder="Enter Contact Number" name="number" >

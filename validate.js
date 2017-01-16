@@ -1,6 +1,12 @@
 // global variables
 var email_available = false;
 
+// function to display imageName
+function setImage()
+{
+	test('hi');
+}
+
 // function to validate password
 function validatePassword(){
 	var password = document.getElementById('password').value;
@@ -43,7 +49,7 @@ function loadState(country_id,oldStateId)
 
 function test(msg)
 {
-	alert("test function : "+msg);
+	alert("Message  : "+msg);
 }
 
 
