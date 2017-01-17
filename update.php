@@ -84,7 +84,7 @@ if(isset($_POST['update'])){
    <script type="text/javascript" src="validate.js"> </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+  <link rel="stylesheet" href="custom.css" >
   <link rel="stylesheet" href="css/bootstrap-datepicker3.css">
   <script src="js/bootstrap-datepicker.js"></script>
      <script>
@@ -100,6 +100,10 @@ if(isset($_POST['update'])){
 </head>
 
 <body style="background-color: grey;" onLoad="loadState(document.getElementById('country').value,oldState);">
+
+	<?php
+		include_once('navbar.php');
+		?>
 <div id="err"></div>
 <div class="container">
 <div class="jumbotron" >
@@ -209,13 +213,16 @@ if(isset($_POST['update'])){
 
   </form>
 
+
   </div>
 
 </div>
 
 </div>
 </div>
-
+<div class="footer" id="footer">
+  <strong>Test.com &copy; All Rights Reserved 2017.</strong>.
+</div>
 </body>
 
 

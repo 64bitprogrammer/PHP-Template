@@ -8,7 +8,7 @@ header('Content-Type: text/html; charset=utf-8' );
 require_once('connect.php');
 
 // fetch countries list for select control
-$country_query = " select Country_ID,Country_Name from countries ORDER BY Country_Name";
+$country_query = "select Country_ID,Country_Name from countries ORDER BY Country_Name";
 $country_result = mysqli_query($conn,$country_query);
 
 if(isset($_POST['submit']))
@@ -145,11 +145,16 @@ function watermarkProfile($email){
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
+<link rel="stylesheet" href="custom.css" >
 
 </head>
 
 <body style="background-color: grey;">
+  <div class="jumbotron" id="header">
+    <div  align="center">
+      <h2> Registration Page </h2>
+    </div>
+  </div>
 <div id="err"></div>
 <div class="container">
 <div class="jumbotron" >
@@ -277,7 +282,9 @@ function watermarkProfile($email){
 
 </div>
 </div>
-
+<div class="footer" id="footer">
+  <strong>Test.com &copy; All Rights Reserved 2017.</strong>.
+</div>
 </body>
 <script type="text/javascript" src="validate.js"> </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

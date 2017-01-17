@@ -22,8 +22,6 @@ if(!isset($_SESSION['sortOrder'])) // for remembering for pagination
 $_SESSION['sortOrder'] = 'asc';
 
 
-
-
 if(isset($_GET['pageno']))
 $page = $_GET['pageno'];
 else
@@ -57,10 +55,6 @@ if(isset($_POST['submit']))
 
 if(!isset($key))
   $key="";
-
-
-
-
 
 $offset = ($page * $recordsPerPage) - $recordsPerPage; // simple calculation
 /*  offset sets the location from where to fetch result and $limit specified
@@ -104,25 +98,40 @@ $key = $_POST['searchbox'];
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="custom.css" >
   <script type="text/javascript" src="listing.js"></script>
+  <style>
+  table {
+      table-layout: fixed;
+      word-wrap: break-word;
+  }
+  </style>
 </head>
 <body>
-
+    <?php
+      include_once('navbar.php');
+      ?>
+  <div align="center">
+      <form method="POST" action="pagination.php" name="form1">
+        <input type="text" value="<?=$key?>" placeholder="Search For ... " name="searchbox" id="searchbox"/>
+        <input type="submit" name="submit" value="Search" />
+      </form>
+  <br/><br/>
   <div class="container">
 
     <div class="table-responsive">
 
-
+      <div class="table-responsive">
       <table class="table table-bordered table-hover" style="background-color:#d2d7dd;">
         <thead>
           <tr>
-            <th> No. </th>
-            <th> <a href="?column1=fname&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="fname" > Firstname </a></th>
-            <th> <a href="?column1=lname&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="lname" >Lastname </a></th>
-            <th> <a href="?column1=email&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="email" >Email </a> </th>
-            <th> <a href="?column1=gender&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="gender" >Address </a></th>
-            <th> <a href="?column1=dob&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="dob">City </a></th>
-            <th> Action </th>
+            <th style="width:5%"> No. </th>
+            <th style="width:10%"> <a href="?column1=fname&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="fname" > Firstname </a></th>
+            <th style="width:10%"> <a href="?column1=lname&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="lname" >Lastname </a></th>
+            <th style="width:20%"> <a href="?column1=email&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="email" >Email </a> </th>
+            <th style="width:10%"> <a href="?column1=gender&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="gender" >Gender </a></th>
+            <th style="width:10%"> <a href="?column1=dob&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="dob">DOB </a></th>
+            <th style="width:10%"> Action </th>
           </tr>
         </thead>
         <tbody>
@@ -133,12 +142,12 @@ $key = $_POST['searchbox'];
             ?>
             <tr>
 
-              <td> <?=$n++?> </td>
+              <td > <?=$n++?> </td>
               <td> <?=$row['fname']?> </td>
               <td> <?=$row['lname']?></td>
               <td> <?=$row['email']?></td>
-              <td> <?=$row['address']?></td>
-              <td> <?=$row['city']?></td>
+              <td> <?=$row['gender']?></td>
+              <td> <?=$row['dob']?></td>
               <td>
                 <button class="btn btn-default" title="Edit" value="<?=$row['id'];?>" onClick="callEdit(this.value);"><span class="glyphicon glyphicon-edit"></span> </button>
     							<button class="btn btn-default" title="Delete" value="<?=$row['id'];?>" onClick="callDelete(this.value);"><span class="glyphicon glyphicon-trash"></span></button>
@@ -150,7 +159,7 @@ $key = $_POST['searchbox'];
           ?>
         </tbody>
       </table>
-
+    </div>
     </div>
 
     <?php
@@ -185,14 +194,12 @@ $key = $_POST['searchbox'];
     }
     echo "</ul> </div>";
     ?>
-<div align="center">
-    <form method="POST" action="pagination.php" name="form1">
-      <input type="text" placeholder="Search For ... " name="searchbox" />
-      <input type="submit" name="submit" value="Search" />
-    </form>
-<br/><br/>
+
 <a href="session.php" class="btn btn-warning" >Logout</a></div>
   </div>
 
+  <div class="footer" id="footer">
+    <strong>Test.com &copy; All Rights Reserved 2017.</strong>.
+  </div>
 </body>
 </html>
