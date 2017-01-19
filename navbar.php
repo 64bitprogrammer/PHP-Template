@@ -10,6 +10,7 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
+        <li><a href="register.php" target="_BLANK">REGISTER</a></li>
         <li><a href="location.php" target="_BLANK">MAP</a></li>
         <li><a href="cropImage.php" target="_BLANK">CROP IMAGE</a></li>
         <li><a href="resizeImage.php" target="_BLANK">RESIZE IMAGE</a></li>

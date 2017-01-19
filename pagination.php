@@ -3,7 +3,7 @@ session_start();
 if(isset($_COOKIE["current_user"]) && $_COOKIE["current_user"]!= ""){
   $_SESSION['current_user'] = $_COOKIE["current_user"];
 }
-if(!isset($_SESSION['current_user']))
+if(!isset($_SESSION['current_user']) && !isset($_SESSION['current_user_id']))
 	header("location: login.php");
 
 require_once('connect.php');
@@ -102,7 +102,7 @@ $key = $_POST['searchbox'];
   <script type="text/javascript" src="listing.js"></script>
   <style>
   table {
-      table-layout: fixed;
+      //table-layout: fixed;
       word-wrap: break-word;
   }
   </style>
@@ -112,14 +112,20 @@ $key = $_POST['searchbox'];
       include_once('navbar.php');
       ?>
   <div align="center">
+
       <form method="POST" action="pagination.php" name="form1">
-        <input type="text" value="<?=$key?>" placeholder="Search For ... " name="searchbox" id="searchbox"/>
-        <input type="submit" name="submit" value="Search" />
-      </form>
+        <div class="input-group add-on col-md-4">
+      <input class="form-control" value="<?=$key?>" placeholder="Search For .." name="searchbox" id="searchbox" type="text">
+      <div class="input-group-btn">
+        <button class="btn btn-danger" name="submit" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+      </div>
+    </div>
+    </form>
+
+
+
   <br/><br/>
   <div class="container">
-
-    <div class="table-responsive">
 
       <div class="table-responsive">
       <table class="table table-bordered table-hover" style="background-color:#d2d7dd;">
@@ -129,6 +135,7 @@ $key = $_POST['searchbox'];
             <th style="width:10%"> <a href="?column1=fname&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="fname" > Firstname </a></th>
             <th style="width:10%"> <a href="?column1=lname&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="lname" >Lastname </a></th>
             <th style="width:20%"> <a href="?column1=email&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="email" >Email </a> </th>
+            <th style="width:6%;"> Image </th>
             <th style="width:10%"> <a href="?column1=gender&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="gender" >Gender </a></th>
             <th style="width:10%"> <a href="?column1=dob&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="dob">DOB </a></th>
             <th style="width:10%"> Action </th>
@@ -137,15 +144,24 @@ $key = $_POST['searchbox'];
         <tbody>
           <?php $n = 1;
 
+
           while($row = mysqli_fetch_assoc($result))
           {
+            if($row['image'] == "" && $row['gender'] == 'male')
+              $dp = "users/male.jpg";
+            else if($row['image'] == "" && $row['gender'] == 'female')
+              $dp = "users/female.png";
+            else
+              $dp = $row['image'];
             ?>
             <tr>
-
               <td > <?=$n++?> </td>
               <td> <?=$row['fname']?> </td>
               <td> <?=$row['lname']?></td>
               <td> <?=$row['email']?></td>
+              <?php
+              echo "<td> <img src='$dp' style='border: solid 1px;'width='50' height='70' alt='image'>";
+              ?>
               <td> <?=$row['gender']?></td>
               <td> <?=$row['dob']?></td>
               <td>
@@ -159,7 +175,6 @@ $key = $_POST['searchbox'];
           ?>
         </tbody>
       </table>
-    </div>
     </div>
 
     <?php
@@ -194,8 +209,6 @@ $key = $_POST['searchbox'];
     }
     echo "</ul> </div>";
     ?>
-
-<a href="session.php" class="btn btn-warning" >Logout</a></div>
   </div>
 
   <div class="footer" id="footer">

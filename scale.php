@@ -17,7 +17,7 @@
 
     // aspect ration = width: height
     $file = $_FILES['image']['tmp_name'];
-    list($original_width,$original_height) = getimagesize($file);
+    list($original_width,$original_height,$type) = getimagesize($file);
     $adjusted_height = $adjusted_width * ( $original_height / $original_width);
 
     $new_image = imagecreatetruecolor($adjusted_width, $adjusted_height);

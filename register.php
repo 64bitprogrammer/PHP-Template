@@ -2,16 +2,14 @@
 session_start();
 $error_msg = "";
 $success_message = "";
-
-header('Content-Type: text/html; charset=utf-8' );
-
 require_once('connect.php');
+header('Content-Type: text/html; charset=utf-8' );
 
 // fetch countries list for select control
 $country_query = "select Country_ID,Country_Name from countries ORDER BY Country_Name";
 $country_result = mysqli_query($conn,$country_query);
 
-if(isset($_POST['submit']))
+if(isset($_POST['submit']) && isset($_FILES['profile_pic']['name']))
 {
   $fname   = myFilter($_POST['fname']);
   $lname   = myFilter($_POST['lname']);
@@ -25,29 +23,33 @@ if(isset($_POST['submit']))
   $state   = myFilter($_POST['state']);
   $country = myFilter($_POST['country']);
 
-  $directory = 'users/' . $email;
+
 
 
   $newdate = date('Y-m-d', strtotime($dob));
 
   $insert_query = "insert into tbl_register (fname,lname,email,password,dob,gender,contact,address,city,state,country) values ('$fname','$lname','$email','$password','$newdate','$gender',$contact,'$address','$city','$state','$country')";
 
-  $conn = mysqli_connect('localhost','root','','shrikrishna') or die("Connection Error !");
+  //$conn = mysqli_connect('localhost','root','','shrikrishna') or die("Connection Error !");
 
   if($conn)
   {
     if(mysqli_query($conn,$insert_query))
     {
+      $row = mysqli_fetch_assoc(mysqli_query($conn,"select id from tbl_register where email='$email' and is_deleted=0"));
+      $id = $row['id'];
+      $directory = 'users/' . $id;
       if(!is_dir($directory))
       {
         mkdir($directory);
       }
-      $directory = "users/".$email ;
+
+      $directory = "users/".$id ;
       $image  = basename($_FILES['profile_pic']['name']);
       $extension = end(explode('.', $image));
       $target = $directory . "/profile" . ".$extension";
       //move_uploaded_file($_FILES['profile_pic']['tmp_name'],$target) or die(" Image Storage Failed !");
-      watermarkProfile($email);
+      watermarkProfile($email,$id,$extension,$conn);
       $success_message = " Records Inserted Successfully ! ";
 	  }
     else
@@ -60,6 +62,9 @@ if(isset($_POST['submit']))
 	$error_msg = ' Connection Problem ';
   }
 }
+else{
+  $error_msg = "Profile picture not selected.";
+}
 
 function myFilter($data) {
   $data = trim($data);
@@ -68,13 +73,15 @@ function myFilter($data) {
   return $data;
 }
 
-function watermarkProfile($email){
-  $destination_folder = "users/".$email ;
+function watermarkProfile($email,$id,$extension,$conn){
+  //require_once('connect.php');
+  $destination_folder = "users/".$id ;
   $watermark_png_file = "images/watermark.png";
   $newFileName = "water.png";
   $max_size = 800;
 
-  $image_name = $_FILES['profile_pic']['name']; //file name
+  //$image_name = $_FILES['profile_pic']['name']; //file name
+  $image_name =  "profile".".$extension";
 	$image_size = $_FILES['profile_pic']['size']; //file size
 	$image_temp = $_FILES['profile_pic']['tmp_name']; //file temp
 	$image_type = $_FILES['profile_pic']['type']; //file type
@@ -94,7 +101,7 @@ function watermarkProfile($email){
 				$image_resource = false;
 		}
 
-	if($image_resource){
+	if($image_resource && $image_size <= 2048000){
 		//Copy and resize part of an image with resampling
 		list($img_width, $img_height) = getimagesize($image_temp);
 
@@ -124,7 +131,8 @@ function watermarkProfile($email){
 
 			//Or Save image to the folder
 			imagejpeg($new_canvas, $destination_folder.'/'.$image_name , 90);
-
+      $image_path = "users/$id/$image_name";
+      mysqli_query($conn,"update tbl_register set Image='$image_path' where email='$email' and is_deleted=0 ") or die(" Failed to set profile image ");
 			//free up memory
 			imagedestroy($new_canvas);
 			imagedestroy($image_resource);
@@ -216,7 +224,7 @@ function watermarkProfile($email){
   <div class="col-sm-6">
     <div class="form-group">
       <label for="image"> Image </label>
-      <input type="file" name="profile_pic" id="profile_pic" onchange="setImage();" />
+      <input type="file" name="profile_pic" id="profile_pic"  />
     </div>
     <div class="form-group">
         <label for="number"> Contact Number:</label>

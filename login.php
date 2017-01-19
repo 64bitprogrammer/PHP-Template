@@ -18,7 +18,7 @@ if(isset($_POST['submit'])){
   $email = $_POST['email'];
   $password =$_POST['password'];
 
-  $select_query = "select password from tbl_register where email = '$email'";
+  $select_query = "select password from tbl_register where email = '$email' and is_deleted=0";
   $result = mysqli_query($conn,$select_query);
 
   if($row=mysqli_fetch_assoc($result)){
@@ -29,6 +29,8 @@ if(isset($_POST['submit'])){
         setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
       }
       $_SESSION['current_user'] = $email;
+      $row = mysqli_fetch_assoc(mysqli_query($conn,"select id from tbl_register where email='$email' and is_deleted=0"));
+      $_SESSION['current_user_id'] = $row['id'];
       header("location: pagination.php");
     }
     else{
