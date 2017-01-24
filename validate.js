@@ -1,58 +1,88 @@
 // global variables
 var email_available = false;
 
-// function to display imageName
-function setImage()
+
+
+function validateForm()
 {
-	test('hi');
+	var a = validateName();
+	var b = validateEmail();
+	var c = validateNumber();
+	var d = validateLname();
+	var e = validateDate();
+	var f = validateGender();
+	var g = validateOthers();
+	var h = validatePassword();
+	var i = validateImg();
+
+	var result = a && b && c && d && e && f && g && email_available && h && i;
+
+	if(result)
+		registerWithJson();
+	else
+		alert(" Some error in form !");
+
+	return false;
+
 }
+// validates image properties
+function validateImg(){
 
-// function to validate password
-function validatePassword(){
-	var password = document.getElementById('password').value;
-	var cpassword = document.getElementById('confirmPassword').value;
-	var	helpObj = document.getElementById('password_help');
+	var helpObj = document.getElementById("image_Help");
+	var image = document.getElementById("profile_pic").files;
 
-	if(password!="" && cpassword!=""){
-		if(password === cpassword){
-			if(password.length>=6){
-				helpObj.innerHTML = "";
-			}
-			else{
-				helpObj.innerHTML = "password too short [6 chars min]";
-			}
-		}else{
-			helpObj.innerHTML = "Password do not match";
+
+	//image.style.display = "none";
+	if(document.getElementById("profile_pic").value != "")
+	{
+		helpObj.innerHTML = "objects fetched ";
+		var maxFileSize = 2048000;
+		var fileSize = image[0].size;
+		var fileName = image[0].name;
+		var arr = fileName.split(".");
+		var fileExtension = arr[1];
+
+		if((fileExtension == "jpg" || fileExtension == "png") && fileSize <=maxFileSize && fileSize >0){
+			helpObj.innerHTML = "";
+			return true;
+		}
+		else{
+			if(fileExtension != "jpg" && fileExtension == "png")
+				helpObj.innerHTML = "Invalid image format !";
+			if(fileSize>maxFileSize)
+				helpObj.innerHTML = "File size should be max. 2MB";
+			if(fileSize<=0)
+				helpObj.innerHTML = "File size invalid !";
+			return false;
 		}
 	}
 	else{
-		helpObj.innerHTML = "Please Enter Password";
+		helpObj.innerHTML = "No file selected";
+		return false;
+	}
+
+}
+
+// validate other fields
+function validateOthers()
+{
+	var address = document.getElementById('address').value
+	var city = document.getElementById('city').value
+	var state = document.getElementById('state').value
+	var country = document.getElementById('country').value
+	var helpObj = document.getElementById('error_report');
+
+	if(address == "" || city =="" || state == "" || country == "" )
+	{
+		helpObj.innerHTML = "Please fill all fields ";
+		return false;
+	}
+	else
+	{
+		helpObj.innerHTML = "";
+		return true;
 	}
 }
-
-// function to load the state from db dynamically
-function loadState(country_id,oldStateId)
-{
-	$.ajax({
-	type: "POST",
-	url: "getState.php",
-	data:'Country_ID='+country_id+'&State_ID='+oldStateId,
-	success: function(data){
-		$("#state").html(data);
-	},
-	error:function (data){
-		$("#error_report").html(data);
-    }
-
-	});
-}
-
-function test(msg)
-{
-	alert("Message  : "+msg);
-}
-
-
 
 // seperate validation call for update page to avoid email already used conflict
 function validateUpdate(oldEmail)
@@ -67,59 +97,38 @@ function validateUpdate(oldEmail)
 
 	var result = a && b && c && d && e && f && g  ;
 
-	return result;;
+}
+
+// function to validate password
+function validatePassword(){
+	var password = document.getElementById('password').value;
+	var cpassword = document.getElementById('confirmPassword').value;
+	var	helpObj = document.getElementById('password_help');
+
+	if(password!="" && cpassword!=""){
+		if(password === cpassword){
+			if(password.length>=6){
+				helpObj.innerHTML = "";
+				return true;
+			}
+			else{
+				helpObj.innerHTML = "password too short [6 chars min]";
+			}
+		}else{
+			helpObj.innerHTML = "Password do not match";
+		}
+	}
+	else{
+		helpObj.innerHTML = "Please Enter Password";
+	}
+	return false;
 }
 
 
-
-// function to check for email availability via ajax
-function checkAvailability()
+function test(msg)
 {
-
-  jQuery.ajax({
-      url: "check_email.php",
-      data:'emailID='+$("#email").val(),
-      type: "POST",
-      success:function(data){
-        //$("#error_report").html(data);
-        if(data == "available")
-        {
-          $("#email_help").html("");
-          email_available = true;
-        }
-        else
-        {
-          $("#email_help").html("Email Already Exists !");
-          email_available = false;
-        }
-      },
-      error:function (data){
-          alert("ajax error");
-      }
-    });
+	alert("Message  : "+msg);
 }
-
-
-// function for city state validation
-function getState(val)
-{
-	$.ajax({
-	type: "POST",
-	url: "getState.php",
-	data:'Country_ID='+val,
-	success: function(data){
-		$("#state").html(data);
-	},
-	error:function (data){
-		$("#error_report").html(data);
-    }
-
-	});
-
-
-}
-
-
 
 // function validates name , allows only alphabets , no spl syms or space or digits
 function validateName()
@@ -378,42 +387,4 @@ function validateGender()
 		helpObj.innerHTML = "";
 		return true;
 	}
-}
-
-// validate other fields
-function validateOthers()
-{
-	var address = document.getElementById('address').value
-	var city = document.getElementById('city').value
-	var state = document.getElementById('state').value
-	var country = document.getElementById('country').value
-	var helpObj = document.getElementById('error_report');
-
-	if(address == "" || city =="" || state == "" || country == "" )
-	{
-		helpObj.innerHTML = "Please fill all fields ";
-		return false;
-	}
-	else
-	{
-		helpObj.innerHTML = "";
-		return true;
-	}
-}
-
-function validateForm()
-{
-	var a = validateName();
-	var b = validateEmail();
-	var c = validateNumber();
-	var d = validateLname();
-	var e = validateDate();
-	var f = validateGender();
-	var g = validateOthers();
-	var h = validatePassword();
-
-	var result = a && b && c && d && e && f && g && email_available && h;
-
-	return result;
-
 }

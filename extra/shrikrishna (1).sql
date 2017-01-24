@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 03, 2017 at 02:05 PM
+-- Generation Time: Jan 24, 2017 at 09:28 AM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -4744,6 +4744,17 @@ INSERT INTO `states` (`State_ID`, `Country_ID`, `State_Name`, `State_Alternate_N
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_images`
+--
+
+CREATE TABLE `tbl_images` (
+  `id` int(11) NOT NULL,
+  `image` longblob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_register`
 --
 
@@ -4752,28 +4763,83 @@ CREATE TABLE `tbl_register` (
   `fname` text NOT NULL,
   `lname` text NOT NULL,
   `email` varchar(50) NOT NULL,
+  `password` varchar(20) NOT NULL,
   `dob` date NOT NULL,
   `gender` text NOT NULL,
   `contact` int(10) NOT NULL,
   `address` varchar(30) NOT NULL,
   `city` text NOT NULL,
   `state` text NOT NULL,
-  `country` text NOT NULL
+  `country` text NOT NULL,
+  `image` varchar(50) NOT NULL,
+  `is_deleted` int(1) NOT NULL DEFAULT '0',
+  `recovery_Code` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tbl_register`
 --
 
-INSERT INTO `tbl_register` (`id`, `fname`, `lname`, `email`, `dob`, `gender`, `contact`, `address`, `city`, `state`, `country`) VALUES
-(1, 'asd', 'bbb', 'navyashetty4u@gmail.com', '0000-00-00', 'male', 6, '66', 'fff', 'waf', 'af'),
-(2, 'Shrikrishna', 'Shanbhag', 'shri@gmail.com', '0000-00-00', 'male', 2147483647, 'Tilakwadi', 'Belgaum', 'Karnataka', 'India'),
-(3, 'Shrikrishna', 'Shanbhag', 'shri@gmail.com', '0000-00-00', 'male', 2147483647, 'Tilakwadi', 'Belgaum', 'Karnataka', 'India'),
-(4, 'Shrikrishna', 'Shanbhag', 'shri@gmail.com', '0000-00-00', 'male', 2147483647, 'Tilakwadi', 'Belgaum', 'Karnataka', 'India'),
-(5, 'Shrikrishna', 'Shanbhag', 'shri@gmail.com', '0000-00-00', 'male', 2147483647, 'Tilakwadi', 'Belgaum', 'Karnataka', 'India'),
-(6, 'Shrikrishna', 'Shanbhag', 'shri@gmail.com', '0000-00-00', 'male', 2147483647, 'Tilakwadi', 'Belgaum', 'Karnataka', 'India'),
-(7, 'Shrikrishna', 'Shanbhag', 'shri@gmail.com', '0000-00-00', 'male', 2147483647, 'Tilakwadi', 'Belgaum', 'Karnataka', 'India'),
-(8, 'Shrikrishna', 'Shanbhag', 'navyashetty4u@gmail.com', '0000-00-00', 'male', 2, '666', 'Belgaum', 'Karnataka', 'India');
+INSERT INTO `tbl_register` (`id`, `fname`, `lname`, `email`, `password`, `dob`, `gender`, `contact`, `address`, `city`, `state`, `country`, `image`, `is_deleted`, `recovery_Code`) VALUES
+(41, 'Shivanand', 'Katti', 'shivanand.m.katti@gmail.com', '12345678', '1993-01-01', 'male', 2147483647, 'Gokaka', 'China', '188', '15', 'users/41/profile.jpg', 0, ''),
+(43, 'Shrikrishna', 'Shanbhag', 'shrikrishna.shanbhag@gmail.com', '783514  ', '1993-11-06', 'male', 2147483647, 'Tilakwadi', 'Belgaum', '1339', '105', 'users/43/profile.jpg', 0, '576229'),
+(44, 'Sudha', 'Munnolimath', 'sudha.r.munnolimath@gmail.com', '12345678', '1992-10-20', 'female', 2147483647, 'Gokak', 'Gokak', '1339', '105', 'users/44/profile.jpg', 0, ''),
+(45, 'Samruddhi', 'SheniBorker', 'ruddhiborker@gmail.com', '12345678', '1993-11-09', 'female', 2147483647, 'Goa', 'Panjim', '1355', '105', 'users/45/profile.jpg', 0, ''),
+(46, 'Vivekanand', 'Mathapati', 'vivek.d.mathapati@gmail.com', '12345678', '1993-01-31', 'male', 2147483647, 'Basvan Kudchi', 'Kudchi', '1162', '88', 'users/46/profile.jpg', 0, ''),
+(47, 'Vikram', 'Pujari', 'vikram@gmail.com', '12345678', '2017-01-25', 'male', 1234567890, 'China', 'Japan', '15', '188', 'users/47/profile.jpg', 0, ''),
+(48, 'Kiran', 'Hegde', 'kiran@gmail.com', '12345678', '2017-01-26', 'male', 965238741, 'Shirsi', 'Bagalkot', '15', '188', 'users/48/profile.jpg', 0, ''),
+(49, 'Clement', 'Ruzario', 'clement@gmail.com', '12345678', '2017-01-25', 'male', 1234567890, 'China', 'Japan', '9', '2', 'users/49/profile.jpg', 0, ''),
+(50, 'Gagan', 'Kulkarni', 'gagan@gmail.com', '12345678', '2017-01-25', 'male', 1234567890, 'China', 'Japan', '15', '188', 'users/50/profile.jpg', 0, ''),
+(51, 'Vaibhav', 'Kulkarni', 'vaibhav@gmail.com', '12345678', '2017-01-25', 'male', 1234567890, 'China', 'Japan', '15', '188', 'users/51/profile.jpg', 0, ''),
+(52, 'Dananand', 'Mathapati', 'daya@gmail.com', '12345678', '2017-01-25', 'male', 1234567890, 'China', 'Japan', '195', '16', 'users/52/profile.jpg', 0, ''),
+(53, 'Mallappa', 'Katti', 'mallappa@gmail.com', '12345678', '2017-01-25', 'male', 1234567890, 'China', 'Japan', '15', '188', 'users/53/profile.jpg', 0, ''),
+(54, 'Pavan', 'Nilajkar', 'pavan@gmail.com', '12345678', '2017-01-25', 'male', 1234567890, 'China', 'Japan', '15', '188', 'users/54/profile.jpg', 0, ''),
+(55, 'Mogambo', 'KhushHua', 'mogambo@gmail.com', '12345678', '2017-01-25', 'male', 1234567890, 'China', 'Japan', '15', '188', 'users/55/profile.jpg', 0, ''),
+(56, 'Ramu', 'Kaka', 'ramukaka@gmail.com', '12345678', '2017-01-25', 'male', 1234567890, 'China', 'Japan', '15', '188', 'users/56/profile.jpg', 0, ''),
+(57, 'Kiran', 'Sutar', 'sutark@gmail.com', '12345678', '2017-01-25', 'male', 1234567890, 'China', 'Japan', '15', '188', 'users/57/profile.jpg', 0, ''),
+(58, 'Vishal', 'Samant', 'vishal@gmail.com', '12345678', '2017-01-25', 'male', 1234567890, 'China', 'Japan', '15', '188', 'users/58/profile.jpg', 0, ''),
+(59, 'Akshay', 'Solanki', 'solanki@gmail.com', '12345678', '2017-01-25', 'male', 1234567890, 'China', 'Japan', '14', '2', 'users/59/profile.jpg', 0, ''),
+(60, 'Mohanish', 'Shanbhag', 'mohanish@gmail.com', '12345678', '2017-01-25', 'male', 1234567890, 'China', 'Japan', '15', '188', 'users/60/profile.jpg', 0, ''),
+(61, 'Samruddhi', 'ShenviBorker', 'ruddhi@gmail.com', 'ruddhi', '2017-01-01', 'female', 987654321, 'kakaland', 'Goa', '213', '17', 'users/61/profile.jpg', 0, '834051'),
+(62, 'Devikant', 'Birje', 'some@gome.cm', '123456789', '1993-01-01', 'male', 12654789, 'Goa', 'China', '14', '2', 'users/62/profile.jpg', 0, ''),
+(63, 'Ramesh', 'Kalu', 'ramu@kamu.com', 'shrikrishna', '1989-03-04', 'male', 321456987, 'Thailan', 'Manga', '1354', '105', 'users/63/profile.jpg', 0, 'NULL'),
+(64, 'Devikant', 'Birje', 'what@got.com', 'daeffdaeff', '1993-01-24', 'male', 123123123, 'daeffdaeff', 'daeffdaeff', '165', '12', 'users/64/profile.jpg', 0, ''),
+(65, 'pappu', 'kappu', 'pappu@gappu.com', 'daeffdaeff', '1993-01-17', 'male', 12654789, 'daeffdaeff', 'daeffdaeff', '121', '7', 'users/65/profile.jpg', 0, ''),
+(66, 'Devikant', 'Birje', 'whatgot@pot.com', 'daeffdaeff', '1993-01-24', 'male', 12654789, 'daeffdaeff', 'daeffdaeff', '191', '15', 'users/66/profile.jpg', 0, ''),
+(67, 'Devikant', 'Birje', 'whatgot@pot.com', 'daeffdaeff', '1993-01-24', 'male', 12654789, 'daeffdaeff', 'daeffdaeff', '191', '15', 'users/67/profile.jpg', 0, ''),
+(68, 'Devikant', 'Kalu', 'what@pot.com', '$destination_folder', '1993-01-10', 'male', 98765541, '$destination_folder', '$destination_folder', '148', '11', 'users/68/profile.jpg', 0, ''),
+(69, 'Ramesh', 'Birje', 'adm@faf.com', '$destination_folder', '1993-01-12', 'male', 6547896, '$destination_folder', '$destination_folder', '192', '15', 'users/69/profile.jpg', 0, ''),
+(70, 'Devikant', 'Birje', 'dawf@goal.com', '$destination_folder', '1993-01-24', 'male', 9876542, '$destination_folder', '$destination_folder', '181', '13', 'users/70/profile.jpg', 1, ''),
+(71, 'Ramesh', 'Kalu', 'ffaw@ad.aom', '$max_size = 800;', '1993-01-24', 'male', 12365987, '$max_size = 800;', '$max_size = 800;', '66', '4', 'users/71/profile.jpg', 0, ''),
+(72, 'Ramesh', 'Kalu', 'ffawada@ad.aom', '$max_size = 800;', '1993-01-24', 'male', 12365987, '$max_size = 800;', '$max_size = 800;', '8', '2', 'users/72/profile.jpg', 0, ''),
+(73, 'Raghavendra', 'Padukone', 'radhe@gamil.com', 'harekrishna', '1993-01-25', 'male', 987654123, '$watermark_png_file', '$watermark_png_file', '135', '8', 'users/73/profile.jpg', 0, ''),
+(74, 'Vinayak', 'Chougule', 'vinaka@gmail.co', 'vinaka@gmail.co', '1993-01-05', 'male', 6987546, 'vinaka@gmail.co', 'vinaka@gmail.co', '16', '2', 'users/74/profile.jpg', 0, ''),
+(75, 'Mogambo', 'KhushHua', 'mogambo@yahoo.com', '123456789', '1993-01-01', 'male', 987654123, 'CV Raman Nagar', 'Bangalore', '14', '2', 'users/75/profile.jpg', 0, ''),
+(76, 'Mogambo', 'KhushHua', 'mogamboa@yahoo.com', '123456789', '1993-01-01', 'male', 987654123, 'CV Raman Nagar', 'Bangalore', '178', '13', 'users/76/profile.jpg', 0, ''),
+(77, 'Raghavendra', 'Padukone', 'shrikrishna.shanbhag@yahoo.com', 'daeffdaeff', '1993-01-01', 'male', 12654789, 'daeffdaeff', 'daeffdaeff', '14', '2', 'users/77/profile.jpg', 0, ''),
+(78, 'Raghavendra', 'Padukone', 'shrikrishna.shanbhag@yahooo.com', 'daeffdaeff', '1993-01-01', 'male', 12654789, 'daeffdaeff', 'daeffdaeff', '291', '21', 'users/78/profile.jpg', 0, ''),
+(79, 'Raghavendra', 'Padukone', 'shrikrishna.shanbhag@yahoooo.com', 'daeffdaeff', '1993-01-01', 'male', 12654789, 'daeffdaeff', 'daeffdaeff', '143', '11', 'users/79/profile.jpg', 0, ''),
+(80, 'Raghavendra', 'Padukone', 'shrikrishna.shanbhag@yahooooo.com', 'daeffdaeff', '1993-01-01', 'male', 12654789, 'daeffdaeff', 'daeffdaeff', '186', '15', 'users/80/profile.jpg', 0, ''),
+(81, 'Raghavendra', 'Padukone', 'shrikrishna.shanbhag@yaha.com', 'daeffdaeff', '1993-01-01', 'male', 12654789, 'daeffdaeff', 'daeffdaeff', '18', '2', '81/profile.jpg', 0, ''),
+(82, 'Akasha', 'Patil', 'akash@gmail.com', 'daeffdaeff', '1993-01-02', 'male', 12654789, 'daeffdaeff', 'daeffdaeff', '4324', '18', 'users/82/profile.jpg', 0, ''),
+(83, 'Arjun', 'Kumar', 'arjun@gmail.com', 'arjun', '1993-01-01', 'male', 654789654, 'Jambavali', 'Jambavali', '10', '10', 'users/83/profile.jpg', 0, ''),
+(84, 'Arjun', 'Kumar', 'arjunkumar@gmail.com', 'arjunkumar', '1993-01-01', 'male', 65489965, 'arjunkumar', 'arjunkumar', '120', '7', 'users/84/profile.jpg', 0, ''),
+(85, 'Ganesha', 'Manesha', 'ganesha@gmail.com', 'ganesha', '1993-01-01', 'male', 12365456, 'ganesh', 'ganesh', '0', '3', 'users/85/profile.png', 0, ''),
+(86, 'Ganesha', 'Manesha', 'ganesha@gmail.com', 'ganesha', '1993-01-01', 'male', 12365456, 'ganesh', 'ganesh', '0', '10', 'users/85/profile.png', 0, ''),
+(87, 'Ganesha', 'Manesha', 'ganesha@gmail.com', 'ganesha', '1993-01-01', 'male', 12365456, 'ganesh', 'ganesh', '0', '10', 'users/85/profile.png', 0, ''),
+(88, 'Arjun', 'Manesha', '64bitprogrammer@gmail.com', '', '0000-00-00', 'female', 12365456, 'asdasdasd', 'asdasd', '14', '2', 'users/def.jpg', 0, ''),
+(89, 'Arjun', 'Manesha', '64bitprogrammer1@gmail.com', 'asdasdasd', '0000-00-00', 'male', 12365456, 'asdasdasd', 'asdasdasd', '0', '3', 'users/def.jpg', 0, ''),
+(90, 'Arjun', 'Manesha', '64bitprogramme2r1@gmail.com', 'asdasdasd', '0000-00-00', 'male', 12365456, 'asdasdasd', 'asdasdasd', '0', '3', 'users/def.jpg', 0, ''),
+(91, 'Arjun', 'Manesha', '64bitpr1ogramm1e2r1@gmail.com', 'asdasdasd', '1993-01-01', 'male', 12365456, 'asdasdasd', 'asdasdasd', '0', '3', 'users/def.jpg', 0, ''),
+(92, 'asdasd', 'asdasd', 'ruddhia@gmail.com', 'asdasd', '1993-01-27', 'female', 1232131231, 'asdasd', 'asdasd', '183', '13', 'users/92/profile.jpg', 0, ''),
+(93, 'asdasd', 'asdasd', 'ruddhiaa@gmail.com', 'asdasd', '1993-01-18', 'female', 2147483647, 'asdasd', 'asdasd', '14', '2', 'users/93/profile.jpg', 0, ''),
+(94, 'asdasd', 'asdasd', 'ruddhiaaa@gmail.com', 'asdasd', '1993-01-18', 'female', 2147483647, 'asdasd', 'asdasd', '83', '5', 'users/94/profile.jpg', 0, ''),
+(95, 'shrikrishna', 'shanbhag', 'shrik@fka.com', 'shrikrisna', '1993-01-17', 'female', 1232131231, 'form1', 'asdasd', '187', '15', 'users/95/profile.png', 0, ''),
+(96, 'shrikrishna', 'shanbhag', 'shrik@afka.com', 'shrikrisna', '1993-01-17', 'female', 1232131231, 'form1', 'asdasd', '184', '13', 'users/96/profile.png', 0, ''),
+(97, 'shrikrishna', 'shanbhag', 'shri1k@afka.com', 'shrikrisna', '1993-01-17', 'female', 1232131231, 'form1', 'asdasd', '19', '2', 'users/97/profile.png', 0, ''),
+(98, 'shrikrishna', 'shanbhag', 'shari1k@afka.com', 'shrikrisna', '1993-01-17', 'female', 1232131231, 'form1', 'asdasd', '0', '3', 'users/98/profile.png', 0, ''),
+(99, 'shrikrishna', 'shanbhag', 's1hari1k@afka.com', 'shrikrisna', '1993-01-17', 'female', 1232131231, 'form1', 'asdasd', '15', '2', 'users/99/profile.png', 0, ''),
+(100, 'shrikrishna', 'shanbhag', 'shanu@gmail.com', 'shrikrishna', '1993-01-01', 'female', 123456987, 'Belgaum', 'Belgaum', '1339', '105', 'users/def.jpg', 0, '');
 
 --
 -- Indexes for dumped tables
@@ -4790,6 +4856,12 @@ ALTER TABLE `countries`
 --
 ALTER TABLE `states`
   ADD PRIMARY KEY (`State_ID`);
+
+--
+-- Indexes for table `tbl_images`
+--
+ALTER TABLE `tbl_images`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tbl_register`
@@ -4812,10 +4884,15 @@ ALTER TABLE `countries`
 ALTER TABLE `states`
   MODIFY `State_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4424;
 --
+-- AUTO_INCREMENT for table `tbl_images`
+--
+ALTER TABLE `tbl_images`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `tbl_register`
 --
 ALTER TABLE `tbl_register`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

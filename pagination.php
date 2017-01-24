@@ -135,8 +135,8 @@ $key = $_POST['searchbox'];
             <th style="width:10%"> <a href="?column1=fname&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="fname" > Firstname </a></th>
             <th style="width:10%"> <a href="?column1=lname&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="lname" >Lastname </a></th>
             <th style="width:20%"> <a href="?column1=email&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="email" >Email </a> </th>
-            <th style="width:6%;"> Image </th>
-            <th style="width:10%"> <a href="?column1=gender&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="gender" >Gender </a></th>
+            <th style="width:10%;padding:0;"> Image </th>
+            <th style="width:5%"> <a href="?column1=gender&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="gender" >Gender </a></th>
             <th style="width:10%"> <a href="?column1=dob&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="dob">DOB </a></th>
             <th style="width:10%"> Action </th>
           </tr>
@@ -160,7 +160,7 @@ $key = $_POST['searchbox'];
               <td> <?=$row['lname']?></td>
               <td> <?=$row['email']?></td>
               <?php
-              echo "<td> <img src='$dp' style='border: solid 1px;'width='50' height='70' alt='image'>";
+              echo "<td> <img src='$dp' style='border: solid 1px;'width='90' height='64' alt='image'>";
               ?>
               <td> <?=$row['gender']?></td>
               <td> <?=$row['dob']?></td>
@@ -197,7 +197,7 @@ $key = $_POST['searchbox'];
       else
       $active = "";
       echo "<li $active> <a href='$path?pageno=$i&key=$key&orderBy=$currentSortOrder&column=$orderBy'> $i </a></li> ";
-      if($totalPages>1 && $i ==$totalPages){
+    //  if($totalPages>1 && $i ==$totalPages){
         if($totalPages>1 && $i==$totalPages ){
           if($page<$totalPages)
           $prev = $page + 1;
@@ -205,7 +205,7 @@ $key = $_POST['searchbox'];
           $prev = $totalPages;
           echo "<li> <a href='$path?pageno=$prev&key=$key&orderBy=$currentSortOrder&column=$orderBy'> <span class='glyphicon glyphicon-chevron-right'></span> </a></li> ";
         }
-      }
+    //  }
     }
     echo "</ul> </div>";
     ?>

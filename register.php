@@ -23,6 +23,10 @@ if(isset($_POST['submit']) && isset($_FILES['profile_pic']['name']))
   $state   = myFilter($_POST['state']);
   $country = myFilter($_POST['country']);
 
+  if(!isset($_FILES['profile_pic']['name'])){
+    $error_msg = "Profile Pic Not Selected !";
+  }
+
 
 
 
@@ -62,9 +66,7 @@ if(isset($_POST['submit']) && isset($_FILES['profile_pic']['name']))
 	$error_msg = ' Connection Problem ';
   }
 }
-else{
-  $error_msg = "Profile picture not selected.";
-}
+
 
 function myFilter($data) {
   $data = trim($data);
@@ -224,8 +226,9 @@ function watermarkProfile($email,$id,$extension,$conn){
   <div class="col-sm-6">
     <div class="form-group">
       <label for="image"> Image </label>
-      <input type="file" name="profile_pic" id="profile_pic"  />
+      <input  type="file" name="profile_pic" id="profile_pic" accept="image/x-png,image/gif,image/jpeg"  />
     </div>
+    <span class="text-danger" id="image_Help"></span>
     <div class="form-group">
         <label for="number"> Contact Number:</label>
         <input type="text" maxlength="10" class="form-control" value="" id="number" placeholder="Enter Contact Number" name="number" >
@@ -240,7 +243,7 @@ function watermarkProfile($email,$id,$extension,$conn){
 
 	<div class="form-group">
       <label for="country"> Country:</label>
-      <select class="form-control" id="country" name="country" onChange="getState(this.value)"  >
+      <select class="form-control" id="country" name="country" onChange="getState(this.value);"  >
       <option value="">Select Country</option>
       <?php
       foreach($country_result as $country) {
@@ -253,7 +256,7 @@ function watermarkProfile($email,$id,$extension,$conn){
       <span class="text-danger" id="country_help"></span>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" id="show_state">
       <label for="state"> State:</label>
       <select  class="form-control" name="state" id="state" >
       <option value="">Select State</option>
@@ -301,6 +304,7 @@ function watermarkProfile($email,$id,$extension,$conn){
   <script src="js/bootstrap-datepicker.js"></script>
 
   <script type="text/javascript" src="validate.js"> </script>
+  <script type="text/javascript" src="ajax.js"> </script>
    <script>
 	    $(document).ready(function () {
 			$('#datepicker').datepicker({

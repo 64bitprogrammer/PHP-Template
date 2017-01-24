@@ -24,9 +24,7 @@ if(!empty($_POST["Country_ID"]))
 	}
 	else{
 
-		?>
-		<option <?="selected"?> value="<?= $_POST["Country_ID"] ?>"><?= utf8_encode($row['Country_Name']); ?></option>
-		<?php
+		echo "false";
 	}
 }
 else
