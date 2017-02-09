@@ -10,7 +10,13 @@ require_once('connect.php');
 // set default variables
 $path = "pagination.php";
 
-$recordsPerPage = 4;
+if(isset($_GET['limit']))
+  $recordsPerPage = $_GET['limit'];
+else if(isset($_POST['limit']))
+  $recordsPerPage = $_POST['limit'];
+else
+  $recordsPerPage = 5;
+
 $orderBy = "fname";
 if(!isset($sortOrder))
 $sortOrder = 'asc';
@@ -50,7 +56,7 @@ if(isset($_GET['key']))
 $key = $_GET['key'];
 
 
-if(isset($_POST['submit']))
+if(isset($_POST['form_submit']))
   $key = $_POST['searchbox'];
 
 if(!isset($key))
@@ -83,7 +89,7 @@ $totalPages = ceil($totalRecords/$recordsPerPage);
 
 //  echo "Total Records = $totalRecords , totalPages = $totalPages , recordsPerPage = $recordsPerPage";
 
-if(isset($_POST['submit']))
+if(isset($_POST['form_submit']))
 $key = $_POST['searchbox'];
 
 // echo " SortOrder = $sortOrder , nextSortOrder = $nextSortOrder , curr = " . $_SESSION['sortOrder'] ;
@@ -113,16 +119,26 @@ $key = $_POST['searchbox'];
       ?>
   <div align="center">
 
-      <form method="POST" action="pagination.php" name="form1">
+      <form method="POST" action="pagination.php" id="myForm"  name="form1">
         <div class="input-group add-on col-md-4">
       <input class="form-control" value="<?=$key?>" placeholder="Search For .." name="searchbox" id="searchbox" type="text">
       <div class="input-group-btn">
-        <button class="btn btn-danger" name="submit" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+        <button class="btn btn-danger" name="form_submit" type="submit"><i class="glyphicon glyphicon-search"></i></button>
       </div>
     </div>
-    </form>
-
-
+    <br>
+    <div class="form-group" >
+      <label for"limit"> Records Per Page :
+      <select class="form-control" name="limit" required width="5%" onchange="submitForm();">
+        <option value="5"  <?php if($recordsPerPage==5) echo "selected";?>>5</option>
+        <option value="10" <?php if($recordsPerPage==10) echo "selected";?>>10</option>
+        <option value="15" <?php if($recordsPerPage==15) echo "selected";?>>15</option>
+      </select>
+    </label>
+    </div>
+  </form><br>
+  <br> <a title="Generate PDF" href="createReport.php" class="btn btn-default"><span class="glyphicon glyphicon-file"></span></a>&nbsp;&nbsp;<a title="Generate PDF with Images" target="_blank" href="html2pdf.php" class="btn btn-default"><span class="glyphicon glyphicon-file"></span></a>
+  &nbsp;&nbsp;<a title="Generate Excel" target="_blank" href="excel.php" class="btn btn-default"><span class="	glyphicon glyphicon-list-alt"></span></a>
 
   <br/><br/>
   <div class="container">
@@ -132,12 +148,12 @@ $key = $_POST['searchbox'];
         <thead>
           <tr>
             <th style="width:5%"> No. </th>
-            <th style="width:10%"> <a href="?column1=fname&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="fname" > Firstname </a></th>
-            <th style="width:10%"> <a href="?column1=lname&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="lname" >Lastname </a></th>
-            <th style="width:20%"> <a href="?column1=email&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="email" >Email </a> </th>
+            <th style="width:10%"> <a href="?column1=fname&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>&limit=<?=$recordsPerPage?>" id="fname" > Firstname </a></th>
+            <th style="width:10%"> <a href="?column1=lname&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>&limit=<?=$recordsPerPage?>" id="lname" >Lastname </a></th>
+            <th style="width:20%"> <a href="?column1=email&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>&limit=<?=$recordsPerPage?>" id="email" >Email </a> </th>
             <th style="width:10%;padding:0;"> Image </th>
-            <th style="width:5%"> <a href="?column1=gender&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="gender" >Gender </a></th>
-            <th style="width:10%"> <a href="?column1=dob&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>" id="dob">DOB </a></th>
+            <th style="width:5%"> <a href="?column1=gender&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>&limit=<?=$recordsPerPage?>" id="gender" >Gender </a></th>
+            <th style="width:10%"> <a href="?column1=dob&orderBy1=<?=$nextSortOrder?>&key1=<?=$key?>&limit=<?=$recordsPerPage?>" id="dob">DOB </a></th>
             <th style="width:10%"> Action </th>
           </tr>
         </thead>
@@ -190,20 +206,20 @@ $key = $_POST['searchbox'];
         $next = $page - 1;
         else
         $next = 1;
-        echo "<li> <a href='$path?pageno=$next&key=$key&orderBy=$currentSortOrder&column=$orderBy'> <span class='glyphicon glyphicon-chevron-left'></span> </a></li> ";
+        echo "<li> <a href='$path?pageno=$next&key=$key&orderBy=$currentSortOrder&column=$orderBy&limit=$recordsPerPage'> <span class='glyphicon glyphicon-chevron-left'></span> </a></li> ";
       }
       if($i == $page)
       $active = " class='active'";
       else
       $active = "";
-      echo "<li $active> <a href='$path?pageno=$i&key=$key&orderBy=$currentSortOrder&column=$orderBy'> $i </a></li> ";
+      echo "<li $active> <a href='$path?pageno=$i&key=$key&orderBy=$currentSortOrder&column=$orderBy&limit=$recordsPerPage'> $i </a></li> ";
     //  if($totalPages>1 && $i ==$totalPages){
         if($totalPages>1 && $i==$totalPages ){
           if($page<$totalPages)
           $prev = $page + 1;
           else
           $prev = $totalPages;
-          echo "<li> <a href='$path?pageno=$prev&key=$key&orderBy=$currentSortOrder&column=$orderBy'> <span class='glyphicon glyphicon-chevron-right'></span> </a></li> ";
+          echo "<li> <a href='$path?pageno=$prev&key=$key&orderBy=$currentSortOrder&column=$orderBy&limit=$recordsPerPage'> <span class='glyphicon glyphicon-chevron-right'></span> </a></li> ";
         }
     //  }
     }
@@ -215,4 +231,9 @@ $key = $_POST['searchbox'];
     <strong>Test.com &copy; All Rights Reserved 2017.</strong>.
   </div>
 </body>
+<script>
+  function submitForm(){
+    document.forms["myForm"].submit();
+  }
+</script>
 </html>

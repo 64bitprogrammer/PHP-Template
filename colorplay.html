@@ -1,0 +1,23 @@
+<html>
+<body onload="setInterval(colors,500);" id="body">
+
+<body>
+<script>
+function colors(){
+	var bd = document.getElementById('body');
+	bd.style.backgroundColor = getRandomColor();
+}
+
+function getRandomColor(number) {
+    var letters = '0123456789ABCDEF',
+        color = '#',
+        generatedNumber,
+        i;
+  for (i = 0; i < 6; i++) {
+      generatedNumber = Math.floor(Math.random() * 16);
+      color += letters[generatedNumber];
+  }
+  return color;
+}
+</script>
+</html>

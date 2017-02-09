@@ -22,13 +22,11 @@ if(isset($_POST['submit']) && isset($_FILES['profile_pic']['name']))
   $city    = myFilter($_POST['city']);
   $state   = myFilter($_POST['state']);
   $country = myFilter($_POST['country']);
+  $plan = myFilter($_POST['plan']);
 
   if(!isset($_FILES['profile_pic']['name'])){
     $error_msg = "Profile Pic Not Selected !";
   }
-
-
-
 
   $newdate = date('Y-m-d', strtotime($dob));
 
@@ -54,7 +52,8 @@ if(isset($_POST['submit']) && isset($_FILES['profile_pic']['name']))
       $target = $directory . "/profile" . ".$extension";
       //move_uploaded_file($_FILES['profile_pic']['tmp_name'],$target) or die(" Image Storage Failed !");
       watermarkProfile($email,$id,$extension,$conn);
-      $success_message = " Records Inserted Successfully ! ";
+      //$success_message = " Records Inserted Successfully ! ";
+      paymentHandler($id,$plan);
 	  }
     else
     {
@@ -268,6 +267,16 @@ function watermarkProfile($email,$id,$extension,$conn){
       <label for="city"> City: </label>
       <input type="text" class="form-control" id="city" value=""  placeholder="Enter City" name="city">
       <span class="text-danger" id="city_help"></span>
+    </div>
+
+    <div class="form-group">
+      <label for="plan">Select Plan </label>
+      <select class="form-control" required name="plan" id="plan">
+        <option value="">Select Membership Plan</option>
+        <option value="silver">Silver Plan : $25 </option>
+        <option value="gold">Gold Plan : $50 </option>
+        <option value="platinum">Plantinum Plan : $100 </option>
+      </select>
     </div>
 
 	<div class="text-danger" id="error_report" >

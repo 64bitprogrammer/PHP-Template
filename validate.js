@@ -1,7 +1,23 @@
 // global variables
 var email_available = false;
 
+// validation for payment gateway page
+function oldValidate()
+{
+	var a = validateName();
+	var b = validateEmail();
+	var c = validateNumber();
+	var d = validateLname();
+	var e = validateDate();
+	var f = validateGender();
+	var g = validateOthers();
+	var h = validatePassword();
+	var i = validateImg();
 
+	var result = a && b && c && d && e && f && g && email_available && h && i;
+
+	return result;
+}
 
 function validateForm()
 {
