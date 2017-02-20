@@ -65,7 +65,8 @@ EOT;
 <?php
 		$content = ob_get_clean(); 
 		$pdf = new HTML2PDF('P','A4','en', false, 'ISO-8859-15', array(10, 10, 10, 10)); 
+		
 		$pdf->writeHTML($content); 
 		ob_end_clean();
-		$pdf->Output('x.pdf','D'); 
+		$pdf->Output('x.pdf',''); 
 ?>

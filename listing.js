@@ -1,5 +1,7 @@
 // javascript file to handle listing.php code
 
+
+
 // function to handle the remember me
 function checkLogin(){
 	var checkbox = document.getElementById('rememberMe');

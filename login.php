@@ -53,7 +53,7 @@ if(isset($_POST['submit'])){
   <link rel="stylesheet" href="custom.css" >
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="listing.js"></script>
+
 </head>
 <body>
 <div class="jumbotron" id="header">
@@ -89,13 +89,19 @@ if(isset($_POST['submit'])){
     </div>
     <a href="forgot.php" target="_blank"> Forgot Password </a><br>
     <div class="text-danger col-sm-offset-2 col-sm-8" id="login_help"> <?=$login_message?> </div><br>
-
+	
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-3">
         <input type="hidden" name="checkbox_value" id="checkbox_value" />
         <button type="submit" name="submit" class="btn btn-default">Submit</button>
       </div>
     </div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-3">
+			<button type="button" onclick="manualLogin()" class="btn btn-primary">FB Login</button>
+		<div>
+	</div>
+	
   </form><br><br>
   <div class="text-success col-sm-offset-2" > <?php echo $_SESSION['success_msg'];unset($_SESSION['success_msg']); ?> </div><br/>
 </div>
@@ -108,6 +114,7 @@ if(isset($_POST['submit'])){
 <div class="footer" id="footer">
   <strong>Test.com &copy; All Rights Reserved 2017.</strong>.
 </div>
-
+<script src="listing.js"></script>
+<script src="FBfunctions.js"></script>
 </body>
 </html>

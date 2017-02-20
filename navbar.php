@@ -16,7 +16,7 @@
         <li><a href="resizeImage.php" target="_BLANK">RESIZE IMAGE</a></li>
         <li><a href="blob.php" target="_BLANK">BLOB</a></li>
         <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">ACCOUNT
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?=$_SESSION['current_user']?>
           <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="session.php">Logout</a></li>

@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	var_dump($_POST);
 	require_once('connect.php');
 	// Process the data only if data is posted.
 	if(isset($_POST)){

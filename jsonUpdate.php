@@ -16,5 +16,4 @@ else{
   $obj = json_encode(array("status"=>"failed"));
   echo $obj;
 }
-
 ?>
